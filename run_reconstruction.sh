@@ -18,6 +18,7 @@ mv ${DIR_WS}/${BAG}.bag ${WS}
 python2 scripts/extract_events_from_rosbag.py ${WS}/${BAG}.bag \
   --output_folder=${WS} \
   --event_topic=/dvs/events
+zip ${WS}/${BAG}.zip ${WS}/${BAG}.txt
 
 # Reconstruction image.
 source $CONDA_PREFIX/etc/profile.d/conda.sh
@@ -42,4 +43,4 @@ python2 scripts/embed_reconstructed_images_in_rosbag.py \
   --image_topic /dvs/image_reconstructed
 
 # Remove .txt file.
-rm  ${WS}/${BAG}.txt
+# rm  ${WS}/${BAG}.txt

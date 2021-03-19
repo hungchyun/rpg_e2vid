@@ -109,18 +109,18 @@ if __name__ == "__main__":
         print('All events extracted!')
         print('Events:', event_sum)
 
-    # Zip text file
-    if not args.no_zip:
-        print('Compressing text file...')
-        path_to_events_zipfile = os.path.join(args.output_folder, '{}.zip'.format(output_name))
-        with zipfile.ZipFile(path_to_events_zipfile, 'w') as zip_file:
-            zip_file.write(path_to_events_file, basename(path_to_events_file), compress_type=zipfile.ZIP_DEFLATED)
-        print('Finished!')
-
-        # Remove events.txt
-        if query_yes_no('Remove text file {}?'.format(path_to_events_file)):
-            if os.path.exists(path_to_events_file):
-                os.remove(path_to_events_file)
-                print('Removed {}.'.format(path_to_events_file))
+    # # Zip text file
+    # if not args.no_zip:
+    #     print('Compressing text file...')
+    #     path_to_events_zipfile = os.path.join(args.output_folder, '{}.zip'.format(output_name))
+    #     with zipfile.ZipFile(path_to_events_zipfile, 'w') as zip_file:
+    #         zip_file.write(path_to_events_file, basename(path_to_events_file), compress_type=zipfile.ZIP_DEFLATED)
+    #     print('Finished!')
+    #
+    #     # Remove events.txt
+    #     if query_yes_no('Remove text file {}?'.format(path_to_events_file)):
+    #         if os.path.exists(path_to_events_file):
+    #             os.remove(path_to_events_file)
+    #             print('Removed {}.'.format(path_to_events_file))
 
     print('Done extracting events!')
