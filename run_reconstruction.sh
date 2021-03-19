@@ -1,7 +1,12 @@
 #!/bin/bash
 
-DIR_WS=/home/hcchou/Project/temp
-BAG=2021-03-19-10-44-40
+while getopts d:b: flag
+do
+    case "${flag}" in
+        d) DIR_WS=${OPTARG};;
+        b) BAG=${OPTARG};;
+    esac
+done
 
 echo Run reconstruction.
 
@@ -11,7 +16,7 @@ mkdir ${WS}
 mv ${DIR_WS}/${BAG}.bag ${WS}
 
 # Extract event from bag.
-python scripts/extract_events_from_rosbag.py ${WS}/${BAG}.bag \
+python2 scripts/extract_events_from_rosbag.py ${WS}/${BAG}.bag \
   --output_folder=${WS} \
   --event_topic=/dvs/events
 
