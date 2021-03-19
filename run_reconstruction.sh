@@ -7,11 +7,10 @@ do
         b) BAG=${OPTARG};;
     esac
 done
-
+WS=${DIR_WS}/${BAG}
 echo Run reconstruction.
 
 # Move bag to workspace.
-WS=${DIR_WS}/${BAG}
 mkdir ${WS}
 mv ${DIR_WS}/${BAG}.bag ${WS}
 
