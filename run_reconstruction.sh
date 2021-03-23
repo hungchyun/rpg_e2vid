@@ -40,7 +40,8 @@ python2 scripts/embed_reconstructed_images_in_rosbag.py \
   --datasets ${BAG} \
   --image_folder ${WS}/reconstruction \
   --output_folder ${WS}/output \
-  --image_topic /dvs/image_reconstructed
+  --image_topic /dvs/image_reconstructed \
+  --accumulated_event_topic /dvs/accumulated_event
 
 # Remove .txt file.
-# rm  ${WS}/${BAG}.txt
+rm  ${WS}/${BAG}.txt

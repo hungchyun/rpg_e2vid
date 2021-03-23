@@ -23,6 +23,8 @@ if __name__ == "__main__":
                         type=str, help="Path to the output folder")
     parser.add_argument("--image_topic", required=True, type=str,
                         help="Name of the topic which will contain the reconstructed images")
+    parser.add_argument("--accumulated_event_topic", required=True, type=str,
+                        help="Name of the topic which will contain the reconstructed images")
     parser.add_argument('--overwrite', dest='overwrite', action='store_true',
                         help="Whether to overwrite existing rosbags (default: false)")
     parser.set_defaults(feature=False)
@@ -71,12 +73,17 @@ if __name__ == "__main__":
             images = sorted(images)
             print('Found {} images'.format(len(images)))
 
+            accumulated_event_images = [f for f in glob.glob(join(reconstructed_images_folder + "/events", "*.png"))]
+            accumulated_event_images = sorted(accumulated_event_images)
+            print('Found {} accumulated_event_images'.format(len(accumulated_event_images)))
+
             with rosbag.Bag(input_bag_filename, 'a') as outbag:
 
                 for i, image_path in enumerate(images):
 
                     stamp = stamps[i]
                     img = cv2.imread(join(reconstructed_images_folder, image_path), 0)
+
                     try:
                         img_msg = bridge.cv2_to_imgmsg(img, encoding='mono8')
                         stamp_ros = rospy.Time(stamp)
@@ -88,3 +95,21 @@ if __name__ == "__main__":
 
                     except CvBridgeError, e:
                         print e
+
+                for i, image_path in enumerate(accumulated_event_images):
+
+                    stamp = stamps[i]
+                    img_accumulated_event = cv2.imread(join(reconstructed_images_folder + "/events", image_path), cv2.IMREAD_COLOR)
+
+                    try:
+                        img_accumulated_event_msg = bridge.cv2_to_imgmsg(img_accumulated_event, encoding='rgb8')
+                        stamp_ros = rospy.Time(stamp)
+                        print(img_accumulated_event.shape, stamp_ros)
+                        img_accumulated_event_msg.header.stamp = stamp_ros
+                        img_accumulated_event_msg.header.seq = i
+                        outbag.write(args.accumulated_event_topic, img_accumulated_event_msg,
+                                     img_accumulated_event_msg.header.stamp)
+
+                    except CvBridgeError, e:
+                        print e
+
